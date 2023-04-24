@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block page_content %}
+
+<style>
+        .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+        .lianjie1{
+                /* text-decoration: none; */
+                color: #428bca;
+                font-weight: 700;
+            }
+        .lianjie2{
+                text-decoration: none;
+                color: #d35042;
+                font-weight: 700;
+            }
+
+</style>
+<div>
+    <h1>{{homework.title}}</h1>
+    <hr>
+
+    <h3>作业详情</h3>
+    <p>
+        {{homework.description}}
+    </p>
+
+    <h3>附件</h3>
+
+    <div>
+        <a href="{{homework.file[1:]}}" download>{{ homework.file.rsplit('/', 1)[-1] }}</a>
+    </div>
+    <div>
+    <hr>
+        <a href="/{{ user.id }}/t/{{title}}/detail" class="lianjie1">回到上一页</a>
+    </div>
+</div>
+{% endblock %}

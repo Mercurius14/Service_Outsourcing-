@@ -1,0 +1,514 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+{% if user.role == "学生" %}
+ <style>
+        /* form总格式表 */
+        .formDiv{
+            margin-top: 2%;
+
+        }
+        .left_title {
+            font-size: 20px;
+            text-align: center;
+            line-height: 10%;
+            margin-top: 2%;
+            margin-top: 2%;
+        }
+        input[type=text] {
+            width: 130px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            /* background-image: url('searchicon.png'); */
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+            margin-left: 5%;
+        }
+
+        input[type=text]:focus {
+            width: 100%;
+        }
+        /* 设置搜索部分占比 */
+        .formSearch{
+            float: left;
+            width: 60%;
+        }
+        label {
+            /*display: flex;*/
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* 选择类型文档 */
+        .selectArea {
+            margin-right: 3%;
+            float: right;
+            margin-left: 0%;
+            margin-bottom: 2%;
+        }
+
+        /* 选择类型 */
+        select {
+            width: 23%;/* 该处的30%是在选择部分40%基础上的 */
+            margin-bottom: 10px;
+            margin-top: 10px;
+            font-family: cursive, sans-serif;
+            outline: 0;
+            background: black;
+            color: #fff;
+            border: 2px solid rgb(159, 157, 157);
+            padding: 4px;
+            border-radius: 15px;
+            margin-left: 0px;
+            height: 30px;
+        }
+
+        .submitInput{
+            width: 10%;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 94%;
+            margin-left: 3%;
+            /* margin-top: 30%; */
+            margin-right: 3%;
+            /* margin-bottom: 4%; */
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+<div class="content">
+    <div class="formDiv">
+        <div class="left_title" style="margin-top: 40px;">
+
+        </div>
+        <form class="formSearch" method="POST" action="./search">
+            <input type="text" name="search" placeholder="Search..">
+            <br>
+            <input type="submit" value="Submit">
+
+        </form>
+        <form class="selectArea" method="POST" action="./query_file">
+                        <select name="file_type" id="lang">
+                            <option value="">文件类型</option>
+                            <option value="word">doc/docx</option>
+                            <option value="ppt">ppt</option>
+                            <option value="pdf">pdf</option>
+                            <option value="image">jpg/png</option>
+                            <option value="excel">excel</option>
+                        </select>
+
+                        <select name="doc_type" id="doc_types">
+                            <option value="">文档类型</option>
+                            <option value="课程作业">课程作业</option>
+                            <option value="实验报告">实验报告</option>
+                            <option value="资料">实验资料</option>
+                            <option value="实验步骤">实验步骤</option>
+                            <option value="实验软件包">实验软件包</option>
+                        </select>
+
+                        <input type="submit" value="Submit"
+                            style="height: 28px;border-radius: 10px;border: 2px solid #f0efef" />
+                        &nbsp;&nbsp;
+                    </form>
+    </div>
+
+    <div>
+        <table id="mytable" style="padding-top: 20px;">
+            <tr>
+
+                <!--When a header is clicked, run the sortTable function, with a parameter, 0 for sorting by names, 1 for sorting by country:-->
+                <th onclick="sortTable(0)">文件名</th>
+                <th onclick="sortTable(1)">文件类型</th>
+                <th>文件修改日期</th>
+            </tr>
+            {% if homework %}
+                {% for data in homework %}
+                        <tr>
+                            <td><a href="/{{data.file[1:]}}" download>{{ data.title }}</a></td>
+                            <td>课程作业</td>
+                            <td>{{data.date}}</td>
+                        </tr>
+                {% endfor %}
+            {% endif %}
+
+            {% if file %}
+                {% for data in file %}
+                        <tr>
+                            <td><a href="{{ data.url[1:] }}">{{ data.title }}</a></td>
+                            <td>{{data.type}}</td>
+                            <td>{{data.date}}</td>
+                        </tr>
+                {% endfor %}
+            {% endif %}
+
+        </table>
+        <tr>
+            <!--When a header is clicked, run the sortTable function, with a parameter, 0 for sorting by names, 1 for sorting by country:-->
+            <!-- <th onclick="sortTable(0)">Name</th> -->
+            <!-- <th onclick="sortTable(1)">Country</th> -->
+        </tr>
+    </div>
+</div>
+    <script>
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+{% elif user.role == "老师" %}
+<style>
+        /* 总大分板块 资源管理板块 */
+        .rightResource {
+            float: right;
+            width: 74%;
+            margin-left: 2%;
+            /* background-color: rgba(1, 1, 1, 0.1); */
+            margin-right: 2%;
+            margin-top: 2%;
+        }
+
+        .leftResource {
+            float: left;
+            width: 17%;
+            margin-left: 2%;
+            /* background-color: rgba(1, 1, 1, 0.1); */
+            border:2px solid #ccc;
+            margin-top: 2%;
+        }
+
+        .left_title {
+            font-size: 20px;
+            text-align: center;
+            line-height: 10%;
+            margin-top: 2%;
+            margin-top: 2%;
+        }
+
+        /* form总格式表 */
+        .formDiv {
+            margin-top: 2%;
+
+        }
+
+        input[type=text] {
+            width: 130px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            /* background-image: url('searchicon.png'); */
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+            margin-left: 5%;
+        }
+
+        input[type=text]:focus {
+            width: 100%;
+        }
+
+        /* 设置搜索部分占比 */
+        .formSearch {
+            float: left;
+            width: 50%;
+        }
+
+        label {
+            /*display: flex;*/
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* 选择类型文档 */
+        .selectArea {
+            margin-right: 3%;
+            float: right;
+            margin-left: 0%;
+            margin-bottom: 2%;
+        }
+
+        /* 选择类型 */
+        select {
+            width: 23%;
+            /* 该处的30%是在选择部分40%基础上的 */
+            margin-bottom: 10px;
+            margin-top: 10px;
+            font-family: cursive, sans-serif;
+            outline: 0;
+            background: black;
+            color: #fff;
+            border: 2px solid rgb(159, 157, 157);
+            padding: 4px;
+            border-radius: 15px;
+            margin-left: 0px;
+            height: 30px;
+        }
+
+        .submitInput {
+            width: 10%;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 94%;
+            margin-left: 3%;
+            /* margin-top: 30%; */
+            margin-right: 3%;
+            /* margin-bottom: 4%; */
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+/* 左部分资源提交板块 */
+        .label_font{
+            margin-top: 4%;
+            font-size: 100%;
+        }
+
+        .inputBtn {
+            width: 50%;
+            margin-top: 10%;
+            float: right;
+            margin-bottom: 10%;
+        }
+        .selectBtn{
+            width: 50%;
+            margin-top: 10%;
+            /* float: right; */
+            margin-bottom: 10%;
+        }
+        .textArea_style{
+            width: 90%;
+            height: 60px;
+        }
+        .container {
+            /* position: fixed; */
+            /* 左边板块18% */
+            position: relative;
+            float: none;
+            margin-top: 10%;
+            margin-left: 5%;
+            height: 90%;
+            width: 90%;
+            background: #fff;
+            border-radius: 1%;
+        }
+    </style>
+<div class="content">
+<div>
+        <div class="leftResource">
+
+
+            <div class=" container">
+                            <form  method="POST" enctype="multipart/form-data" >
+                                <div>
+                                    <label for="" class="label_font" style="margin-top: 40px;">资源名称:</label>
+                                    <div>
+                                        <input name="resource_name" style="width: 75%;" placeholder="请输入资源名称" />
+                                    </div>
+                                </div>
+                                <div style="margin-top: 4%;">
+                                    <label for="" class="label_font" >文件类型:</label>
+                                    <div></div>
+                                    <select name="resource_type" class="select" id="resource_type">
+                                        <option value="">文档类型</option>
+                                        <option value="课程作业">课程作业</option>
+                                        <option value="实验报告">实验报告</option>
+                                        <option value="资料">实验资料</option>
+                                        <option value="实验步骤">实验步骤</option>
+                                        <option value="实验软件包">实验软件包</option>
+                                    </select>
+
+                                </div>
+                                <div  style="margin-top: 4%;">
+                                    <label for="" class="label_font" >资源简介:</label>
+                                    <div>
+                                        <textarea name="resource_description"class="textArea_style" rows="4"
+                                            placeholder="请输入资源描述，不支持HTML标签，请详细填写便于作为推荐资源以赚取更多积分，如描述不清可能无法审核通过"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="file">
+                                    <button class="inputBtn">上传</button>
+                                </div>
+                            </form>
+                    </div>
+
+            </div>
+            <!-- 资源管理部分 -->
+
+            <div class="rightResource">
+                <div class="left_title" style="margin-top: 40px;">
+                    资源管理
+                </div>
+
+                <div class="formDiv" method="POST" action="./search">
+                   <form class="formSearch" method="POST" action="./search">
+                        <input type="text" name="search" placeholder="Search..">
+                        <br>
+                        <input type="submit" value="Submit">
+                    </form>
+                    <form class="selectArea" method="POST" action="./query_file">
+                        <select name="file_type" id="lang">
+                            <option value="">文件类型</option>
+                            <option value="word">doc/docx</option>
+                            <option value="ppt">ppt</option>
+                            <option value="pdf">pdf</option>
+                            <option value="image">jpg/png</option>
+                            <option value="excel">excel</option>
+                        </select>
+
+                        <select name="doc_type" id="doc_types">
+                            <option value="">文档类型</option>
+                            <option value="课程作业">课程作业</option>
+                            <option value="实验报告">实验报告</option>
+                            <option value="资料">实验资料</option>
+                            <option value="实验步骤">实验步骤</option>
+                            <option value="实验软件包">实验软件包</option>
+                        </select>
+
+                        <input type="submit" value="Submit"
+                            style="height: 28px;border-radius: 10px;border: 2px solid #f0efef" />
+                        &nbsp;&nbsp;
+                    </form>
+                </div>
+
+                <div>
+                    <table id="mytable" style="padding-top: 20px;">
+                        <tr>
+                            <!--When a header is clicked, run the sortTable function, with a parameter, 0 for sorting by names, 1 for sorting by country:-->
+                            <th onclick="sortTable(0)">文件名</th>
+                            <th onclick="sortTable(1)">文件类型</th>
+                            <th>文件修改日期</th>
+                        </tr>
+                        {% if homework %}
+                        {% for data in homework %}
+                        <tr>
+                            <td><a href="/{{data.sources[1:]}}" download>{{ data.title }}</a></td>
+                            <td>课程作业</td>
+                            <td>{{data.date}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                        {% if file %}
+                        {% for data in file %}
+                        <tr>
+                            <td><a href="{{ data.url[1:] }}">{{ data.title }}</a></td>
+                            <td>{{data.type}}</td>
+                            <td>{{data.date}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                </div>
+                <tr>
+                    <!--When a header is clicked, run the sortTable function, with a parameter, 0 for sorting by names, 1 for sorting by country:-->
+                    <!-- <th onclick="sortTable(0)">Name</th> -->
+                    <!-- <th onclick="sortTable(1)">Country</th> -->
+                </tr>
+                <script>
+                    function sortTable(n) {
+                        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                        table = document.getElementById("myTable");
+                        switching = true;
+                        dir = "asc";
+                        while (switching) {
+                            switching = false;
+                            rows = table.rows;
+                            for (i = 1; i < (rows.length - 1); i++) {
+                                shouldSwitch = false;
+                                x = rows[i].getElementsByTagName("TD")[n];
+                                y = rows[i + 1].getElementsByTagName("TD")[n];
+                                if (dir == "asc") {
+                                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                        shouldSwitch = true;
+                                        break;
+                                    }
+                                } else if (dir == "desc") {
+                                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                        shouldSwitch = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (shouldSwitch) {
+                                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                switching = true; switchcount++;
+                            } else {
+                                if (switchcount == 0 && dir == "asc") {
+                                    dir = "desc";
+                                    switching = true;
+                                }
+                            }
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+{% endif %}
+{% endblock %}

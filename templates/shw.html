@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block page_content %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% if user.role == "老师"%}
+    <style>
+        .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+        .lianjie1{
+                /* text-decoration: none; */
+                color: #428bca;
+                font-weight: 700;
+            }
+        .lianjie2{
+                text-decoration: none;
+                color: #d35042;
+                font-weight: 700;
+            }
+            </style>
+    </style>
+    <div>
+    <h1>{{data.title}}</h1>
+    <hr>
+    <h3>作业描述</h3>
+    <p>
+        {{ data.description }}
+
+    <h3>作业的附加资源</h3>
+
+    <div>
+        <a href="{{ data.sources[1:] }}" class="lianjie" download>{{ data.sources.rsplit('/', 1)[-1] }}</a>
+<!--        <a href="/static/方程求解.docx" class="lianjie" download>{{data.sources}}</a>-->
+    </div>
+
+        
+        <!-- <a href="作业管理老师端.html" class="lianjie2">删除作业</a> -->
+        <br>
+        <hr>
+        <br>
+        <a href="/{{ user.id}}/t/homework" class="lianjie1">回到首页</a>
+       </div>
+
+{% elif user.role == "学生" %}
+
+<style>
+        .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+        .lianjie1{
+                /* text-decoration: none; */
+                color: #428bca;
+                font-weight: 700;
+            }
+        /* h3{
+            line-height: 10px;
+        } */
+            
+</style>
+
+<div>
+    <h1>{{data.title}}</h1>
+    <hr>
+    <h3>作业描述</h3>
+    <p>
+        {{data.description}}
+
+    <h3>作业的附加资源</h3>
+
+    <div>
+        <a href="{{data.sources[1:]}}" class="lianjie" download>{{data.sources.rsplit('/', 1)[-1]}}</a>
+    </div>
+
+    <!---以下部分为提交作业--->
+
+    <h3>作业提交</h3>
+
+        {{ wtf.quick_form(form) }}
+        <br>
+        <br>
+        <a href="/{{ user.id }}/s/homework" class="lianjie1">回到首页</a>
+       </div>
+
+{% endif %}
+{% endblock %}

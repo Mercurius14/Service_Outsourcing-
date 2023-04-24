@@ -1,0 +1,8 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+{% if user.role == "学生" %}
+
+{% elif user.role == "老师" %}
+
+{% endif %}
+{% endblock %}

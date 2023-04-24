@@ -1,0 +1,43 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+{% if user.role == "学生" %}
+<style>
+        .jinzhi {
+        resize: none;
+        }
+    </style>
+    <div class="content">
+        <br>
+            <form action="">
+                <div style="display:flex">
+                    <div><input type="submit" value="点击运行"></div>
+                <div>
+                    <select>
+                    <option>C(gcc)</option>
+                    <option>C++(g++)</option>
+                    <option>JAVA(javac)</option>
+                    <option>Python(python2)</option>
+                    <option>JavaScript(node)</option>
+                    <option>PHP(php)</option>
+                    <option>R(R)</option>
+                </select>
+                </div>
+                <div style="margin:20px"></div>
+                <div>
+                    <input type="file">
+                </div>
+                </div>
+                <hr>
+                 <!-- <hr style=" height:10px;border:none;border-top:10px groove skyblue;"/> -->
+                <br>
+                &nbsp&nbsp
+                <textarea class="jinzhi" name="" id="input" cols="70" rows="40" style="overflow-y:scroll"></textarea>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <textarea class="jinzhi" name="" id="output" cols="40" rows="40" style="overflow-y:scroll"></textarea>
+        </form>
+    </div>
+
+{% elif user.role == "老师" %}
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,560 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+<style>
+    /* 轮播图样式 */
+
+    #boxhdp {
+      position: relative;
+      top: 0px;
+      width: 100%;
+      height: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      font-size: 0px;
+    }
+
+    #img>li {
+      width: 100%;
+      float: left;
+      text-align: center;
+      display: none;
+    }
+
+    #img>li img {
+      width: 100%;
+    }
+
+    #img>.current {
+      display: block;
+    }
+
+    #li {
+      position: absolute;
+      left: 50%;
+      bottom: 15px;
+      margin-left: -35px;
+    }
+
+    #li>li {
+      width: 10px;
+      height: 10px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin-right: 5px;
+      float: left;
+      cursor: pointer;
+    }
+
+    #li>.on {
+      background-color: #f50;
+    }
+
+    #an {
+      display: none;
+    }
+
+    #an a {
+      position: absolute;
+      top: 50%;
+      width: 40px;
+      height: 46px;
+      background-color: rgba(0, 0, 0, 0.108);
+      line-height: 40px;
+      color: #fff;
+    }
+
+    #an a:hover {
+      background-color: rgba(0, 0, 0, 0.293);
+    }
+
+    #an .an-a2 {
+      right: 0;
+    }
+
+    #an img {
+      position: relative;
+      width: 30px;
+      left: 5px;
+      top: 7px;
+    }
+
+
+
+    /* 新闻公告样式 */
+    /* 每一个板块的最大板块 */
+    .main_News {
+      margin-top: 20px;
+      padding-top: 1%;
+      /* height: 70%; */
+      width: 95%;
+      margin: 0 auto;
+      display: flex;
+      height: 40%;
+      margin-left: 3%;
+    }
+
+
+    /* 小标题下方的线 */
+    .title_News {
+      margin-left: 10%;
+      margin-top: 5%;
+      width: 100%;
+      height: 43px;
+      border-bottom: 3px solid #354083;
+      position: relative;
+      display: flex;
+    }
+
+    .title_News div {
+      display: inline-block;
+      display: flex;
+    }
+
+    .title_News div img {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* 每个板块左边的小标题 */
+    .firstdiv {
+      width: 28%;
+      /*大小为小板块的比例*/
+      background-color: #555;
+      color: #fff;
+      line-height: 25%;
+      margin-left: 10%;
+    }
+
+    .firstdiv img {
+      position: relative;
+      top: 12px;
+      left: 20px;
+    }
+
+    .firstdiv p {
+      width: 100%;
+      text-align: center;
+      align-self: center;
+    }
+
+    /* 每个板块右边的小标题 */
+    .lastdiv {
+      width: 28%;
+      /*大小为小板块的比例*/
+      background-color: #555;
+      color: #fff;
+      line-height: 25%;
+      margin-left: 10%;
+    }
+
+    .lastdiv img {
+      position: relative;
+      top: 12px;
+      left: 20px;
+    }
+
+    .lastdiv p {
+      width: 100%;
+      text-align: center;
+      align-self: center;
+    }
+
+    .more {
+      height: 14px;
+      position: absolute;
+      right: 0px;
+      bottom: 3px;
+    }
+
+    /* 新闻表单 */
+    .xinwen_list {
+      width: 100%;
+    }
+
+    .xinwen_list ul {
+      width: 100%;
+      padding-top: 30px;
+    }
+
+    .xinwen_list ul li {
+      position: relative;
+      width: 100%;
+      display: flex;
+      height: 30px;
+      font-size: 14px;
+      color: #57575e;
+    }
+
+    .xinwen_list ul li:hover {
+      color: #354083;
+    }
+
+    .xinwen_list ul li p:last-child {
+      position: absolute;
+      right: 0px;
+    }
+
+    /* 小部分的最大padding */
+    /* 新闻中间展示部分最大样式 */
+    .main_msg_main {
+      /* width: 30%; */
+      /* height: 60%;*/
+      margin-left: 50px;
+      width: 100%;
+    }
+
+    /* 新闻左边展示部分最大样式 */
+    .main_msg_left {
+      width: 100%;
+    }
+
+    /* 最右边图片展示部分最大样式 */
+    .main_msg_right {
+      width: 60%;
+      margin-left: 10%;
+      /* position: relative; */
+    }
+
+    .title_img {
+      width: 100%;
+      position: relative;
+      font-size: 0px;
+    }
+
+    .title_img img {
+      width: 100%;
+      height: 155px;
+    }
+
+    .img_title {
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+      height: 33px;
+      background-color: rgba(0, 0, 0, 0.476);
+      color: #fff;
+      line-height: 33px;
+      font-size: 14px;
+    }
+
+    .img_title p {
+      margin-left: 10px;
+    }
+
+    .img_title ul {
+      height: 29px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      position: absolute;
+      display: flex;
+      right: 20px;
+      bottom: 0px;
+    }
+
+    .img_title ul li {
+      color: black;
+      text-align: center;
+      line-height: 24px;
+      margin-top: 3px;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      margin-left: 5px;
+    }
+
+    .img_title ul li:hover {
+      background-color: #F7561E;
+      color: #fff;
+    }
+/* 专题部份+轮播图显示 */
+    .zhuanti_title {
+      position: relative;
+      width: 100%;
+      border-bottom: 2px solid #354083;
+      height: 25px;
+      padding-top: 10px;
+      /* padding-bottom: 10px; */
+      display: flex;
+      line-height: 45px;
+    }
+
+    .zhuanti_title img:first-child {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      top: 15px;
+    }
+
+    /* 底部栏的显示 */
+    .footer {
+      width: 100%;
+      height: 20%;
+      background-color: #555;
+      margin-bottom: 0px;
+      margin-top: 2%;
+    }
+
+    .footer_box {
+      width: 95%;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      color: #fff;
+    }
+
+    /* 底部栏显示的文字部分 */
+    .gongneng {
+      margin-top: 1%;
+      margin-left: 1%;
+      margin-right: 1%;
+      /* size: 20%; */
+      font-size: 80%;
+      color: #ccc;
+    }
+
+    .gongneng:hover {
+      color: white;
+    }
+
+    .lianjie {
+      margin-left: 20px;
+    }
+
+    .youqinglianjie {
+      height: 100%;
+      line-height: 47px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .youqinglianjie a {
+      color: #fff;
+      padding-left: 20px;
+      text-decoration: none;
+    }
+
+    .contur {
+      padding-top: 20px;
+      margin-left: 30px;
+    }
+
+    .footerbanquan {
+      width: 100%;
+      background-color: #353535;
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      line-height: 24px;
+    }
+
+    .footerbanquan a {
+      color: #fff;
+    }
+  </style>
+
+<!-- 轮播图 -->
+<div class="content">
+  <div>
+    <div id="boxhdp">
+      <ul id="img">
+        <li class="current">
+          <img src="/static/image/homePage_CCF.jpg">
+        </li>
+        <li>
+          <!-- <img src="image/background.png"> -->
+        </li>
+        <li>
+          <!-- <img src="picture/b3.jpg"> -->
+        </li>
+      </ul>
+      <ul id="li">
+        <li class="on"></li>
+        <li></li>
+        <li></li>
+      </ul>
+
+      <div style="clear: both;"></div>
+
+      <div class="an" id="an">
+        <a href="javascript:;" id="prev">
+          <img src="/static/image/background.png" alt="">
+        </a>
+        <a href="javascript:;" id="next" class="an-a2">
+<!--          <img src="/static/image/right.png" alt="">-->
+        </a>
+      </div>
+    </div>
+
+    <!-- 轮播图部分参数 -->
+    <script>
+      hdp({
+        li: "li", //默认值：li;默认用li包裹
+        boxid: "boxhdp", //最外面div  id
+        imgid: "img", //图片外面id
+        optid: "li", //opt外面id
+        an: "an", //左右按钮id，用于移上显示和隐藏
+        prev: "prev", //左边箭头id
+        next: "next", //右边箭头id
+        ms: 2300 //多少毫秒切换一张,
+      })
+    </script>
+  </div>
+
+  <!-- 新闻公告模块 -->
+  <div class="main_News">
+    <!-- 左边的板块 -->
+    <div class="main_msg_left">
+      <!-- 标题部分 -->
+      <div class="title_News">
+        <div class="firstdiv">
+          <!-- <img src="picture/nes.png" alt=""> -->
+          <p>学院要闻</p>
+        </div>
+        <!-- <img id="more" src="picture/more.png" alt=""> -->
+      </div>
+
+      <div class="xinwen_list">
+        <ul>
+          <li>
+            <p>大数据与软件学院本科生一支部开展主题</p>
+            <p>2023-03-23</p>
+          </li>
+          <li>
+            <p>重庆大学成功获得第三十一届亚太软件工程</p>
+            <p>2023-03-21</p>
+          </li>
+          <li>
+            <p>大数据与软件学院开展2023年“学雷锋·绿色...</p>
+            <p>2023-03-18</p>
+          </li>
+          <li>
+            <p>大数据与软件学院本科生二支部召开组织生...</p>
+            <p>2023-03-17</p>
+          </li>
+          <li>
+            <p>大数据与软件学院举行第十届“研知有理”研...</p>
+            <p>2023-03-04</p>
+          </li>
+          <li>
+            <p>大数据与软件学院本科2019级举行研后...</p>
+            <p>2023-02-26</p>
+          </li>
+          <li>
+            <p>永远跟党走志愿耀青春——我校师生积极组...</p>
+            <p>2022-04-02</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- 右边的板块 -->
+    <div class="main_msg_main">
+      <div class="title_News">
+        <div class="firstdiv">
+          <!-- <img src="picture/gonggao3.png" alt=""> -->
+          <p>通知公告</p>
+        </div>
+      </div>
+
+      <div class="xinwen_list">
+        <ul>
+          <li>
+            <p>重庆大学大数据与软件学院团委2023年...</p>
+            <p>2023-03-27</p>
+          </li>
+          <li>
+            <p>重庆大学大数据与软件学院诚邀海内外</p>
+            <p>2023-03-22</p>
+          </li>
+          <li>
+            <p>大数据与软件学院2023年本科生转专业...</p>
+            <p>2022-09-24</p>
+          </li>
+          <li>
+            <p>大数据与软件学院疫情防控紧急联络和服务...</p>
+            <p>2022-09-07</p>
+          </li>
+          <li>
+            <p>关于选聘2022-2023学年研究生兼职辅导员...</p>
+            <p>2022-06-06</p>
+          </li>
+          <li>
+            <p>大数据与软件学院关于评选2022年重庆 ...</p>
+            <p>2022-03-26</p>
+          </li>
+          <li>
+            <p>欢迎全国2023届优秀本科毕业生免试攻读...</p>
+            <p>2022-12-01</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- 轮播图 -->
+    <div class="main_msg_right">
+      <div class="title_img">
+        <img src="/static/image/homePage_CCF2.jpg" alt="">
+        <div class="img_title">
+        <br>
+          <p style="color: black;">青年有理想有担当</p>
+          <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <div class="zhuanti_title">
+
+        <p>专题网页</p>
+        <!-- <img class="more" src="image/background.png" alt=""> -->
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="footer">
+    <div class="footer_box">
+      <!-- <img src="picture/download.png" alt=""> -->
+      <div class="gongneng">
+        <!-- <img src="picture/mail.png" alt=""> -->
+        <p>邮箱服务</p>
+      </div>
+      <div class="gongneng">
+        <!-- <img src="picture/jc-vpn.png" alt=""> -->
+        <p>邮箱服务</p>
+      </div>
+      <div class="gongneng">
+        <!-- <img src="picture/mail.png" alt=""> -->
+        <p>邮箱服务</p>
+      </div>
+      <!-- <img class="lianjie" src="picture/lianjie.png" alt=""> -->
+      <div class="youqinglianjie">
+        <!-- <a href=""></a>
+        <a href=""></a>
+        <a href=""></a><br>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a> -->
+      </div>
+      <div class="contur">
+        <!-- <img src="picture/weixin.png" alt=""> -->
+      </div>
+      <div class="contur">
+        <!-- <img src="picture/weibo.png" alt=""> -->
+      </div>
+    </div>
+  </div>
+  <div class="footerbanquan">
+    版权所有 COPYRIGHT © 2023
+    <a href=""> 科智创新参赛小组</a>
+  </div>
+</div>
+{% endblock %}

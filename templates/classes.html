@@ -1,0 +1,542 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+{% if user.role == "学生" %}
+
+<style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        .header {
+            background-color: #f1f1f1;
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+        }
+
+        /* 左边 */
+        .columnLeft {
+            float: left;
+            width: 70%;
+            padding: 20px;
+            height: 800px;
+            margin-left: 3%;
+            margin-top: 2%;
+            background-color: #EEEEEE
+
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+            margin-top: 2%;
+        }
+
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 800px;
+            text-align: center;
+        }
+
+        /*选课管理格式表*/
+        .columnRight {
+            width: 20%;
+            background-color: #bbb;
+            float: left;
+            padding: 20px;
+            height: 800px;
+            margin-left: 4%;
+            margin-right: 3%;
+            margin-top: 2%;
+        }
+
+        .selectCourse {
+            /*width: 18%;
+            height: 90%; */
+            overflow-x: hidden;
+        }
+
+        .table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: #f1f1f1;
+            width: 900px;
+            border: 1px solid #EEEEEE;
+        }
+
+        .courseList {
+            text-align: left;
+            padding: 16px;
+
+        }
+
+        .course_t {
+            background-color: #f2f2f2;
+            height: 50px;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+
+        /* 课程表样式管理 */
+        .tableCourse {
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+            /* margin-left: 220px; */
+            /* width: 980px;*/
+            height: 700px;
+            border: 2px solid #E4E2E1;
+            /* border-radius: 10px; */
+        }
+        .selectCourseBtn{
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 40px;
+            width: 60x;
+            margin-top: 8%;
+            margin-left: 60%;
+            border-radius: 10px;
+            border: #EEEEEE;
+        }
+        .courseTd{
+            border: 2px solid #E4E2E1;
+        }
+        ._1234 {
+            background-color: #D2C7BF;
+        }
+
+        ._5678 {
+            background-color: #D0BF75;
+        }
+
+        .course {
+            background-color: #BABCBB;
+        }
+
+        .head {
+            background-color: #859d95;
+            text-align: center;
+        }
+
+        .course {
+
+            text-align: center;
+
+        }
+        p{
+            text-align: center;
+        }
+
+    </style>
+    <!-- <div class="header">
+        <h2>Header</h2>
+    </div> -->
+
+    <div class="row content">
+        <div class="columnLeft">
+            <p>2020-2021学年1学期</p>
+            <table class="tableCourse" border="1" cellpadding="20" cellspacing="0">
+                <tr class="head">
+                    <td>节次/周次</td>
+                    <td>星期一</td>
+                    <td>星期二</td>
+                    <td>星期三</td>
+                    <td>星期四</td>
+                    <td>星期五</td>
+                    <td>星期六</td>
+                    <td>星期天</td>
+                </tr>
+                <tr>
+                    <td class="_1234">第一节</td>
+                    <td> </td>
+                    <td class="course" rowspan="2">数据结构<br>教师：张*<br></td>
+                    <td class="course" rowspan="2">大学英语3<br>教师：陈*<br></td>
+                    <td class="course" rowspan="2">面向对象程序设计（Java）A<br>教师：文*<br></td>
+                    <td class="course" rowspan="2">数据结构<br>教师:张*<br></td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第二节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第三节</td>
+                    <td> </td>
+                    <td class="course" rowspan="2">数据库原理及应用A<br>教师：曾*<br> </td>
+                    <td class="course" rowspan="2">体育3<br>马*<br> </td>
+                    <td class="course" rowspan="2"> 数据库原理及应用A<br>教师：曾*<br></td>
+                    <td class="course" rowspan="2">Linux体系和编创<br>教师：王*<br> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第四节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第五节</td>
+                    <td class="course" rowspan="2">面向对象程序设计（Java）A<br>教师：文*<br> </td>
+                    <td> </td>
+                    <td class="course" rowspan="2">面向对象分析与设计（UML）<br>教师：赵*<br> </td>
+                    <td> </td>
+                    <td class="course" rowspan="2"> 大学英语3<br>教师：陈*<br></td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第六节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第七节</td>
+                    <td class="course" rowspan="2">面向对象分析与设计（UML）<br>教师：赵* </td>
+                    <td class="course" rowspan="2">Linux体系和编创<br>教师：王*<br> </td>
+                    <td class="course" rowspan="2">工程经济学<br>教师：何*<br> </td>
+                    <td> </td>
+                    <td class="course" rowspan="2">形势与政策2<br>教师：于*<br> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第八节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="columnRight">
+
+            <div class="selectCourse">
+                <table class="courseList">
+                    <tr style="height: 50px;">
+                        <th>Course</th>
+                        <th>Points</th>
+                    </tr>
+                    <tr class="course_t">
+                        <td>数据库原理及应用A</td>
+                        <td>4</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>大学英语3</td>
+                        <td>2</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>面向对象程序设计（Java）A</td>
+                        <td>3</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>Linux体系和编创</td>
+                        <td>3</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>形势与政策2</td>
+                        <td>0</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>工程经济学</td>
+                        <td>3</td>
+                    </tr>
+                    <tr class="course_t">
+                        <td>面向对象分析与设计（UML）</td>
+                        <td>3</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <button class="selectCourseBtn">选课管理</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% elif user.role == "老师" %}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        .header {
+            background-color: #f1f1f1;
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+        }
+
+        /* 左边 */
+        .columnLeft {
+            float: left;
+            width: 70%;
+            padding: 20px;
+            height: 800px;
+            margin-left: 3%;
+            margin-top: 2%;
+            background-color: #EEEEEE
+
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+            margin-top: 2%;
+        }
+
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 800px;
+            text-align: center;
+        }
+
+        /*选课管理格式表*/
+        .columnRight {
+            width: 20%;
+            background-color: #bbb;
+            float: left;
+            padding: 20px;
+            height: 800px;
+            margin-left: 4%;
+            margin-right: 3%;
+            margin-top: 2%;
+        }
+
+        .selectCourse {
+            /*width: 18%;
+            height: 90%; */
+            overflow-x: hidden;
+        }
+
+        .table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: #f1f1f1;
+            width: 900px;
+            border: 1px solid #EEEEEE;
+        }
+
+        .courseList {
+            text-align: left;
+            padding: 16px;
+
+        }
+
+        .course_t {
+            background-color: #f2f2f2;
+            height: 50px;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+
+        /* 课程表样式管理 */
+        .tableCourse {
+            color: black;
+            font-size: 13px;
+            font-weight: bold;
+            /* margin-left: 220px; */
+            /* width: 980px;*/
+            height: 700px;
+            border: 2px solid #E4E2E1;
+            /* border-radius: 10px; */
+        }
+        .selectCourseBtn{
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 40px;
+            width: 60x;
+            margin-top: 8%;
+            margin-left: 60%;
+            border-radius: 10px;
+            border: #EEEEEE;
+        }
+        .courseTd{
+            border: 2px solid #E4E2E1;
+        }
+        ._1234 {
+            background-color: #D2C7BF;
+        }
+
+        ._5678 {
+            background-color: #D0BF75;
+        }
+
+        .course {
+            background-color: #BABCBB;
+        }
+
+        .head {
+            background-color: #859d95;
+            text-align: center;
+        }
+
+        .course {
+
+            text-align: center;
+
+        }
+        p{
+            text-align: center;
+        }
+
+    </style>
+    <div class="row content">
+        <div class="columnLeft">
+            <p>2020-2021学年1学期</p>
+            <table class="tableCourse" border="1" cellpadding="20" cellspacing="0">
+                <tr class="head">
+                    <td>节次/周次</td>
+                    <td>星期一</td>
+                    <td>星期二</td>
+                    <td>星期三</td>
+                    <td>星期四</td>
+                    <td>星期五</td>
+                    <td>星期六</td>
+                    <td>星期天</td>
+                </tr>
+                <tr>
+                    <td class="_1234">第一节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第二节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第三节</td>
+                    <td> </td>
+                    <td class="course" rowspan="2">数据库原理及应用A<br>教师：曾*<br> </td>
+                    <td> </td>
+                    <td class="course" rowspan="2"> 数据库原理及应用A<br>教师：曾*<br></td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_1234">第四节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+
+                </tr>
+                <tr>
+                    <td class="_5678">第五节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第六节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+
+                </tr>
+                <tr>
+                    <td class="_5678">第七节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td class="_5678">第八节</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="columnRight">
+
+            <div class="selectCourse">
+                <table class="courseList">
+                    <tr style="height: 50px;">
+                        <th>Course</th>
+                        <th>Points</th>
+                    </tr>
+                    <tr class="course_t">
+                        <td>数据库原理及应用A</td>
+                        <td>4</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div>
+                <button class="selectCourseBtn">选课管理</button>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endif %}
+{% endblock %}

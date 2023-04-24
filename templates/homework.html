@@ -1,0 +1,245 @@
+{% extends 'both_base.html' %}
+{% block page_content %}
+{% if user.role == "学生" %}
+<style>/* 设置页面主体字体和背景颜色 */
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f6f6f6;
+            }
+
+            /* 设置标题样式 */
+            h1 {
+              font-size: 36px;
+              /* text-align: center; */
+              margin-top: 50px;
+              margin-bottom: 30px;
+            }
+
+            /* 设置表格样式 */
+            table {
+              border-collapse: collapse;
+              margin: 0 auto;
+              background-color: #fff;
+              box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+
+            /* 设置表格表头样式 */
+            thead {
+              background-color: #428bca;
+              color: #fff;
+            }
+
+            /* 设置表格表头单元格样式 */
+            th {
+              padding: 10px;
+              text-align: center;
+            }
+
+            /* 设置表格数据单元格样式 */
+            td {
+              padding: 10px;
+              text-align: center;
+              border-bottom: 1px solid #ddd;
+            }
+
+            /* 设置表格奇偶行的背景颜色 */
+            tr:nth-child(even) {
+              background-color: #f2f2f2;
+            }
+
+            tr:nth-child(odd) {
+              background-color: #fff;
+            }
+
+            /* 设置表格底部行的样式 */
+            tfoot {
+              background-color: #f6f6f6;
+              color: #333;
+              font-weight: bold;
+            }
+
+            /* 设置表格底部行单元格样式 */
+            tfoot td {
+              padding: 10px;
+              text-align: center;
+              border-top: 2px solid #ddd;
+            }
+
+            /* 设置添加按钮样式 */
+            .add-btn {
+              display: block;
+              margin: 20px auto;
+              padding: 10px 20px;
+              background-color: #428bca;
+              color: #fff;
+              border: none;
+              border-radius: 5px;
+              font-size: 16px;
+              cursor: pointer;
+            }
+
+            .add-btn:hover {
+              background-color: #3071a9;
+            }
+
+            .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+
+            </style>
+    <div  class="content">
+        <h1>作业列表</h1>
+        <div>选择一项作业以浏览具体内容，开始处理或编辑作业。</div>
+        <br>
+        <hr>
+        <br>
+        <table>
+            <tr>
+            <th>作业标题</th>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp截止日期</th>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp状态</th>
+            <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp分数</th>
+            </tr>
+            {% for data in homework %}
+            <tr>
+            <td><a href="/{{user.id}}/{{form}}/shw/{{data.title}}" class="lianjie">{{data.title}}</a></td>
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{data.date}}</td>
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{% if data.state %}已提交{% else %}未提交{% endif %}</td>
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{data.score}}</td>
+            <tr>
+            {% endfor %}
+
+            </table>
+
+        </form>
+    </div>
+{% elif user.role == "老师" %}
+<style>/* 设置页面主体字体和背景颜色 */
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f6f6f6;
+            }
+
+            /* 设置标题样式 */
+            h1 {
+              font-size: 36px;
+              /* text-align: center; */
+              margin-top: 50px;
+              margin-bottom: 30px;
+            }
+
+            /* 设置表格样式 */
+            table {
+              border-collapse: collapse;
+              margin: 0 auto;
+              background-color: #fff;
+              box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+
+            /* 设置表格表头样式 */
+            thead {
+              background-color: #428bca;
+              color: #fff;
+            }
+
+            /* 设置表格表头单元格样式 */
+            th {
+              padding: 10px;
+              text-align: center;
+            }
+
+            /* 设置表格数据单元格样式 */
+            td {
+              padding: 10px;
+              text-align: center;
+              border-bottom: 1px solid #ddd;
+            }
+
+            /* 设置表格奇偶行的背景颜色 */
+            tr:nth-child(even) {
+              background-color: #f2f2f2;
+            }
+
+            tr:nth-child(odd) {
+              background-color: #fff;
+            }
+
+            /* 设置表格底部行的样式 */
+            tfoot {
+              background-color: #f6f6f6;
+              color: #333;
+              font-weight: bold;
+            }
+
+            /* 设置表格底部行单元格样式 */
+            tfoot td {
+              padding: 10px;
+              text-align: center;
+              border-top: 2px solid #ddd;
+            }
+
+            /* 设置添加按钮样式 */
+            .add-btn {
+              display: block;
+              margin: 20px auto;
+              padding: 10px 20px;
+              background-color: #428bca;
+              color: #fff;
+              border: none;
+              border-radius: 5px;
+              font-size: 16px;
+              cursor: pointer;
+            }
+
+            .add-btn:hover {
+              background-color: #3071a9;
+            }
+
+            .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+            .lianjie1{
+                /* text-decoration: none; */
+                color: #428bca;
+                font-weight: 700;
+            }
+            </style>
+    <div class="content">
+        <h1>作业列表</h1>
+    <div>选择一项作业以浏览具体内容。</div>
+    <hr>
+    <div>
+        <a href="/{{user.id}}/{{form}}/homeWork" class="lianjie1">发布作业</a>
+    </div>
+    <br>
+    <br>
+    <table>
+        <tr>
+        <th>作业标题</th>
+        <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp截止日期</th>
+        <!-- <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp状态</th> -->
+        <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp提交情况</th>
+        </tr>
+
+        {% for data in homework %}
+            <tr>
+            <td><a href="/{{user.id}}/{{form}}/shw/{{data.title}}" class="lianjie">{{data.title}}</a></td>
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{data.date}}</td>
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <a href="/{{user.id}}/{{form}}/{{data.title}}/detail" class="lianjie">已提交（人数）</a>
+            </td>
+
+            <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{data.number}}</td>
+            <tr>
+        {% endfor %}
+
+
+        </table>
+
+    </form>
+    </div>
+
+{% endif %}
+{% endblock %}

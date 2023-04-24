@@ -1,0 +1,519 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block navbar %}
+<style>
+        /* 设置导航栏样式 */
+        .navbar {
+            position: fixed;
+            width: 100%;
+			/* height: 10%; */
+            background-color: #555;
+            overflow: auto;
+            margin:0px;
+            z-index: 999;
+            padding:0px
+        }
+
+        /* 导航栏链接 */
+        .navbar a {
+            float: left;
+            text-align: center;
+            padding: 8px;
+            color: white;
+            text-decoration: none;
+            /*font-size: 17px;*/
+        }
+
+        /* 鼠标悬停时的导航栏链接 */
+        .navbar a:hover {
+            background-color: #000;
+        }
+
+        /* 当前/活动导航栏链接 */
+        .active {
+            background-color: #4CAF50;
+        }
+
+        /*导航栏图标排布*/
+        .contentHome {
+			margin-top: 0.4%;
+            margin-left: 0.6%;
+            font-size: 16px;
+        }
+
+        .contentTerm {
+            margin-left: 6%;
+            /*background-color:rgba(55, 55, 30, 0.5);*/
+            margin-top: 0.4%;
+            justify-content: center;
+            justify-content: baseline;
+            font-size: 14px;
+        }
+
+        .contentUser {
+			margin-top: 0.4%;
+            font-size: 15px;
+            margin-left: 55%;
+
+			/* margin-right: 2%; */
+
+        }
+
+        .borderRadios_Term {
+            width: 50px;
+            height: 12px;
+            border: 10px solid rgba(55, 55, 30, 0.5);
+            border-radius: 10px;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Lato", sans-serif;
+        }
+
+        /* 侧边栏菜单 */
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 15%;
+            height: 100%;
+            background-color: #111;
+            position: fixed;
+            overflow: auto;
+            z-index: 1;
+            left: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+            white-space: nowrap;
+        }
+
+        /* 导航菜单contnt */
+        .sidebar a {
+            padding: 15% 15% 15% 15%;
+            display: block;
+            color: #818181;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .sidebar a.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* 鼠标悬停 */
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /*右部分*/
+        div.content {
+            margin-left: 15%;
+            padding: 1px 16px;
+            height: 1000px;
+            text-align: left;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .material-icons,
+        .icon-text {
+            vertical-align: middle;
+        }
+
+        .material-icons {
+            padding-bottom: 3px;
+        }
+
+        /*滑动选项卡*/
+        /* 叠加层（背景）*/
+        .overlay {
+            /* Height & width 取决于您希望如何显示叠加层（请参阅下面的 JS）*/
+            height: 15%;
+            width: 0;
+            position: fixed;
+            /* 原地不动 */
+            z-index: 1;
+            /* 保持在顶部 */
+            left: 0;
+            top: 8px;
+            background-color: rgb(0, 0, 0);
+            /* 黑色后备颜色 */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* 黑色后备颜色 */
+            overflow-x: hidden;
+            /* 禁用水平滚动 */
+            transition: 0.5s;
+            /* 0.5 秒过渡效果滑入或滑下叠加层（高度或宽度，取决于显示）*/
+        }
+
+        /* 将内容定位在叠加层内 */
+        .overlay-content {
+            position: relative;
+            top: 25%;
+            /* 25% 从顶部开始 */
+            width: 100%;
+            /* 100% 宽度 */
+            text-align: center;
+            /* 居中的文本/链接 */
+            margin-top: 30px;
+            /* 30px 上边距以避免与小屏幕上的关闭按钮冲突 */
+        }
+
+        /* 覆盖层内的导航链接 */
+        .overlay a {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            /* 显示块而不是内联 */
+            transition: 0.3s;
+            /* 悬停时的过渡效果（颜色） */
+        }
+
+        /* 当您将鼠标悬停在导航链接上时，更改它们的颜色 */
+        .overlay a:hover,
+        .overlay a:focus {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 100px;
+        }
+
+        /*不同屏幕大小的配置*/
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 70%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--顶部导航栏-->
+    <div class="navbar">
+        <a  href="/" class="contentHome" ><i class="fa fa-w fa-bars"></i> 科智创新管理系统</a>
+        <a class="contentTerm"><!--<div class="borderRadios_Term">2023春</div>-->2023春</a>
+        <a class="contentUser" href="/">Login<i class="fa fa-fw fa-user"></i> </a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+{% if user %}
+<style>
+        /* 设置导航栏样式 */
+        .navbar {
+            width: 100%;
+			/* height: 10%; */
+            background-color: #555;
+            overflow: auto;
+        }
+
+        /* 导航栏链接 */
+        .navbar a {
+            float: left;
+            text-align: center;
+            padding: 8px;
+            color: white;
+            text-decoration: none;
+            /*font-size: 17px;*/
+        }
+
+        /* 鼠标悬停时的导航栏链接 */
+        .navbar a:hover {
+            background-color: #000;
+        }
+
+        /* 当前/活动导航栏链接 */
+        .active {
+            background-color: #4CAF50;
+        }
+
+        /*导航栏图标排布*/
+        .contentHome {
+			margin-top: 0.4%;
+            margin-left: 0.6%;
+            font-size: 16px;
+        }
+
+        .contentTerm {
+            margin-left: 6%;
+            /*background-color:rgba(55, 55, 30, 0.5);*/
+            margin-top: 0.4%;
+            justify-content: center;
+            justify-content: baseline;
+            font-size: 14px;
+        }
+
+        .contentUser {
+			margin-top: 0.4%;
+            font-size: 15px;
+            margin-left: 55%;
+
+			/* margin-right: 2%; */
+
+        }
+
+        .borderRadios_Term {
+            width: 50px;
+            height: 12px;
+            border: 10px solid rgba(55, 55, 30, 0.5);
+            border-radius: 10px;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Lato", sans-serif;
+        }
+
+        /* 侧边栏菜单 */
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 15%;
+            height: 100%;
+            background-color: #111;
+            position: fixed;
+            overflow: auto;
+            z-index: 1;
+            left: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+            white-space: nowrap;
+        }
+
+        /* 导航菜单contnt */
+        .sidebar a {
+            padding: 15% 15% 15% 15%;
+            display: block;
+            color: #818181;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .sidebar a.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* 鼠标悬停 */
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /*右部分*/
+        div.content {
+            margin-left: 15%;
+            padding: 1px 16px;
+            height: 1000px;
+            text-align: left;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .material-icons,
+        .icon-text {
+            vertical-align: middle;
+        }
+
+        .material-icons {
+            padding-bottom: 3px;
+        }
+
+        /*滑动选项卡*/
+        /* 叠加层（背景）*/
+        .overlay {
+            /* Height & width 取决于您希望如何显示叠加层（请参阅下面的 JS）*/
+            height: 15%;
+            width: 0;
+            position: fixed;
+            /* 原地不动 */
+            z-index: 1;
+            /* 保持在顶部 */
+            left: 0;
+            top: 8px;
+            background-color: rgb(0, 0, 0);
+            /* 黑色后备颜色 */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* 黑色后备颜色 */
+            overflow-x: hidden;
+            /* 禁用水平滚动 */
+            transition: 0.5s;
+            /* 0.5 秒过渡效果滑入或滑下叠加层（高度或宽度，取决于显示）*/
+        }
+
+        /* 将内容定位在叠加层内 */
+        .overlay-content {
+            position: relative;
+            top: 25%;
+            /* 25% 从顶部开始 */
+            width: 100%;
+            /* 100% 宽度 */
+            text-align: center;
+            /* 居中的文本/链接 */
+            margin-top: 30px;
+            /* 30px 上边距以避免与小屏幕上的关闭按钮冲突 */
+        }
+
+        /* 覆盖层内的导航链接 */
+        .overlay a {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            /* 显示块而不是内联 */
+            transition: 0.3s;
+            /* 悬停时的过渡效果（颜色） */
+        }
+
+        /* 当您将鼠标悬停在导航链接上时，更改它们的颜色 */
+        .overlay a:hover,
+        .overlay a:focus {
+            color: #f1f1f1;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 100px;
+        }
+
+        /*不同屏幕大小的配置*/
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 70%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+    <!--侧边栏-->
+
+    <div id="mySidebar"  class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+        <br>
+        <a href="/{{form}}/{{user.id}}"><span><i class="material-icons"></i><span class="icon-text">&nbsp;&nbsp;Home</span></span></a>
+        <a href="/{{user.id}}/{{form}}/classes"><i class="material-icons" onclick="clickSidebar()">Curriculum</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;课程管理</a>
+        <a href="/{{user.id}}/{{form}}/sources"><i class="material-icons">Resource</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资源集中</a>
+        <a href="/{{user.id}}/{{form}}/homework"><i class="material-icons">Homework</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;作业管理</a>
+        <a href="/{{user.id}}/{{form}}/experiment"><i class="material-icons">Experiment</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;实验管理</a>
+        <a href="/{{user.id}}/{{form}}/train"><i class="material-icons">Training</i><span class="icon-text"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实训管理</a>
+    </div>
+
+
+
+
+
+
+    <script>
+        var mini = true;
+
+        function toggleSidebar() {
+            if (mini) {
+                console.log("opening sidebar");
+                document.getElementById("mySidebar").style.width = "20%";
+                document.getElementById("main").style.marginLeft = "20%";
+
+                this.mini = false;
+                openNav();
+            } else {
+                console.log("closing sidebar");
+                document.getElementById("mySidebar").style.width = "110px";
+                document.getElementById("main").style.marginLeft = "110px";
+
+                this.mini = true;
+                closeNav();
+            }
+        }
+
+    </script>
+    <script>
+        function clickSidebar(evt) {
+            var i;
+            document.getElementById("mySidebar").style.display = "block";
+            evt.currentTarget.className += ".active";
+        }
+    </script>
+    <script>
+        /* 当点击 span 元素时打开 */
+        function openNav() {
+            document.getElementById("myNav").style.width = "30%";
+            //document.getElementById("myNav").style.height="15%";
+        }
+
+        /* 当有人点击覆盖层内的 "x" 符号时关闭 */
+        function closeNav() {
+            document.getElementById("myNav").style.width = "0%";
+        }
+    </script>
+{% endif %}
+ <div id="main" class="content">
+     {% for message in get_flashed_messages() %}
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% block page_content %}{% endblock %}
+ </div>
+{% endblock %}

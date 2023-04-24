@@ -1,0 +1,124 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}科智创新管理系统-管理员{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+			</button>
+			<a href="/" class="navbar-brand">科智创新管理系统</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/admin/add">新增用户</a></li>
+		        <li><a href="/logout">退出</a></li>
+		    </ul>
+		    <ul class="nav navbar-nav">
+				<li><a href="/">首页</a></li>
+				<li><a href="/admin/control">管理界面</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	{% for message in get_flashed_messages() %}
+		<div class="alert alert-warning">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			{{ message }}
+		</div>
+	{% endfor %}
+	<div class="table-responsive">
+	<table class="table table-responsive table-striped table-hover table-condensed">
+		<h3>老师信息</h3>
+        <thead>
+            <th>id</th>
+            <th>姓名</th>
+            <th>角色</th>
+            <th>冻结</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user.role == '老师' %}
+                    <tr class="teacher-row">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{% if user.frozen %}已冻结{% else %}未冻结{% endif %}</td>
+                        <td>
+                            <button class="delete">删除</button>
+                            <button class="frozen">{% if user.frozen %}解冻{% else %}冻结{% endif %}</button>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+	<div class="table-responsive">
+	<table class="table table-responsive table-striped table-hover table-condensed">
+		<h3>学生信息</h3>
+        <thead>
+            <th>id</th>
+            <th>姓名</th>
+            <th>角色</th>
+            <th>冻结</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if user.role == '学生' %}
+                    <tr class="teacher-row">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{% if user.frozen %}已冻结{% else %}未冻结{% endif %}</td>
+                        <td>
+                            <button class="delete">删除</button>
+                            <button class="frozen">{% if user.frozen %}解冻{% else %}冻结{% endif %}</button>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+$(document).ready(function() {
+	$('.delete').click(function() {
+		var confirmDelete = confirm("确定要删除吗？");
+		if (confirmDelete) {
+			$.post('/admin/delete', {id: $(this).parent().siblings().first().text()});
+			$(this).parent().parent().remove();
+		}
+	});
+
+	$('.frozen').click(function() {
+		if ($($(this).parent().siblings()[3]).text() === '未冻结') {
+			$.post('/admin/frozen', {id: $(this).parent().siblings().first().text()});
+			$(this).text('解冻');
+			$($(this).parent().siblings()[3]).text('已冻结');
+		} else {
+			$.post('/admin/normal', {id: $(this).parent().siblings().first().text()});
+			$(this).text('冻结');
+			$($(this).parent().siblings()[3]).text('未冻结');
+		}
+	});
+});
+</script>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'bootstrap/base.html' %}
+{% block navbar %}
+<style>
+        /* 设置导航栏样式 */
+        .navbar {
+            width: 100%;
+            background-color: #555;
+            overflow: auto;
+        }
+
+        /* 导航栏链接 */
+        .navbar a {
+            float: left;
+            text-align: center;
+            padding: 8px;
+            color: white;
+            text-decoration: none;
+            /*font-size: 17px;*/
+
+        }
+
+        /* 鼠标悬停时的导航栏链接 */
+        .navbar a:hover {
+            background-color: #000;
+        }
+
+        /* 当前/活动导航栏链接 */
+        .active {
+            background-color: #4CAF50;
+        }
+        /*导航栏图标排布*/
+        .contentHome{
+            margin-left: 1%;
+            font-size: 20px;
+        }
+        .contentTerm{
+            margin-left: 10%;
+            /*background-color:rgba(55, 55, 30, 0.5);*/
+            margin-top: 3px;
+            justify-content: center;
+            justify-content: baseline;
+            font-size: 14px;
+        }
+
+        .contentUser{
+            font-size: 20px;
+            margin-left: 64%;
+
+        }
+        .borderRadios_Term{
+            width: 50px;
+            height: 12px;
+            border: 10px solid rgba(55, 55, 30, 0.5);
+            border-radius: 10px ;
+        }
+        body {
+            margin: 0;
+            font-family: "Lato", sans-serif;
+        }
+
+        /* 侧边栏菜单 */
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 15%;
+            height: 100%;
+            background-color: #111;
+            position: fixed;
+            overflow: auto;
+            z-index: 1;
+            left: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+            white-space: nowrap;
+        }
+
+        /* 导航菜单contnt */
+        .sidebar a {
+            padding: 15% 15% 15% 15%;
+            display: block;
+            color: #818181;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .sidebar a.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* 鼠标悬停 */
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /*右部分*/
+        div.content {
+            margin-left: 15%;
+            padding: 1px 16px;
+            height: 1000px;
+            text-align: left;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .material-icons,
+        .icon-text {
+            vertical-align: middle;
+        }
+
+        .material-icons {
+            padding-bottom: 3px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 100px;
+        }
+        /*不同屏幕大小的配置*/
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 70%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--顶部导航栏-->
+    <div class="navbar">
+        <a  href="/" class="contentHome" ><i class="fa fa-w fa-bars"></i> 科智创新管理系统</a>
+        <a class="contentTerm"><!--<div class="borderRadios_Term">2023春</div>-->2023春</a>
+        <a class="contentUser" href="#">Login<i class="fa fa-fw fa-user"></i> </a>
+    </div>
+{% endblock %}
+{% block content %}
+	<div class="container">
+	{% for message in get_flashed_messages() %}
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% block page_content %}{% endblock %}
+	</div>
+{% endblock %}

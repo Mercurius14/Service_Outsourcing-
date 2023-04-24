@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block page_content %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<div class="table-responsive">
+    <table class="table table-responsive table-striped table-hover table-condensed">
+        <h3>学生信息</h3>
+        <thead>
+            <th>学生名字</th>
+            <th>提交情况</th>
+            <th>提交文件</th>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td><a href="/{{user.id}}/t/{{title}}/detail/{{student.stu_id}}">{{ student.name }}</a></td>
+                    <td>{% if student.state %}已提交{% else %}未提交{% endif %}</td>
+                    <td><a href="{{student.file[1:]}}" download>{{ student.file.rsplit('/', 1)[-1] }}</a></td>
+                    <td>
+                        {% if student.state %}
+                            <form method="POST">
+                                <label for="score">评分：</label>
+                                <input type="number" name="score" id="score" value="{{ student.score }}" min="0" max="100">
+                                <button type="submit" class="btn btn-primary">提交评分</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <div>
+            <br>
+            <br>
+            <a href="/{{ user.id }}/t/homework" class="lianjie1">回到首页</a>
+    </div>
+</div>
+{% endblock  %}

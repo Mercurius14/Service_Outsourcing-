@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block page_content %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+    <style>
+        .lianjie{
+                text-decoration: none;
+                color: #428bca;
+            }
+        .lianjie1{
+                /* text-decoration: none; */
+                color: #428bca;
+                font-weight: 700;
+            }
+        /* h3{
+            line-height: 10px;
+        } */
+            
+            </style>
+    </style>
+        <div>
+            {{ wtf.quick_form(form) }}
+
+            <br>
+            <br>
+            <a href="/{{ user.id }}/t/homework" class="lianjie1">回到首页</a>
+    </div>
+
+{% endblock %}
